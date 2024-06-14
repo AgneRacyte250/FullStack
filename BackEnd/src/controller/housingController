@@ -1,0 +1,35 @@
+var housingService = require('../service/housingService');
+
+var getDataControllerFn = async (req, res) => {
+    var houses = await housingService.getDataFromDBService();
+    res.send({ "status": true, "data": houses });
+}
+
+var createHousingControllerFn = async (req, res) => {
+    var status = await housingService.createHousingDBService(req.body);
+    if (status) {
+        res.send({ "status": true, "message": "Housing entry created successfully" });
+    } else {
+        res.send({ "status": false, "message": "Error creating housing entry" });
+    }
+}
+
+var updateHousingController = async (req, res) => {
+    var result = await housingService.updateHousingDBService(req.params.id, req.body);
+    if (result) {
+        res.send({ "status": true, "message": "Housing entry updated successfully" });
+    } else {
+        res.send({ "status": false, "message": "Error updating housing entry" });
+    }
+}
+
+var deleteHousingController = async (req, res) => {
+    var result = await housingService.removeHousingDBService(req.params.id);
+    if (result) {
+        res.send({ "status": true, "message": "Housing entry deleted successfully" });
+    } else {
+        res.send({ "status": false, "message": "Error deleting housing entry" });
+    }
+}
+
+module.exports = { getDataControllerFn, createHousingControllerFn, updateHousingController, deleteHousingController };
